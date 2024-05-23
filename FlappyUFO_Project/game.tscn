@@ -1,0 +1,103 @@
+[gd_scene load_steps=15 format=3 uid="uid://dx7gkcry8oy2u"]
+
+[ext_resource type="PackedScene" uid="uid://benahmw6wnmx6" path="res://player.tscn" id="1_jib23"]
+[ext_resource type="Script" path="res://game.gd" id="1_mtwgn"]
+[ext_resource type="Script" path="res://ParallaxBackground.gd" id="2_kaqgh"]
+[ext_resource type="Texture2D" uid="uid://bj1o846f2ewft" path="res://flappy-bird-assets/sprites/background-night.png" id="3_yblp0"]
+[ext_resource type="Texture2D" uid="uid://bp8ylueanynyk" path="res://flappy-bird-assets/sprites/base.png" id="4_a2f8g"]
+[ext_resource type="FontFile" uid="uid://npefoxuc8g1y" path="res://flappy-bird-assets/Flappy-Bird.ttf" id="7_3yad3"]
+[ext_resource type="Texture2D" uid="uid://b8dh8bgc8b08i" path="res://flappy-bird-assets/sprites/Alternatemessage.png" id="7_bi2sj"]
+[ext_resource type="Texture2D" uid="uid://de3hegqvsvx7t" path="res://flappy-bird-assets/sprites/gameover.png" id="7_wcevr"]
+[ext_resource type="Script" path="res://Message.gd" id="8_c7v5v"]
+[ext_resource type="AudioStream" uid="uid://csd8r0mbcphqk" path="res://flappy-bird-assets/audio/hit.wav" id="10_fq12i"]
+[ext_resource type="AudioStream" uid="uid://ceq0iigqcff4o" path="res://flappy-bird-assets/audio/point.wav" id="11_hkdbb"]
+[ext_resource type="AudioStream" uid="uid://bpcqxqcnk6ig0" path="res://flappy-bird-assets/audio/wing.wav" id="12_wh336"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w2hvp"]
+size = Vector2(362, 111)
+
+[sub_resource type="LabelSettings" id="LabelSettings_tm2vj"]
+font = ExtResource("7_3yad3")
+font_size = 100
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Game" type="Node"]
+script = ExtResource("1_mtwgn")
+
+[node name="CrearObstaculosTimer" type="Timer" parent="."]
+autostart = true
+
+[node name="Player" parent="." instance=ExtResource("1_jib23")]
+metadata/_edit_group_ = true
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+script = ExtResource("2_kaqgh")
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2(361.25, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer2"]
+position = Vector2(180, 263.5)
+scale = Vector2(1.25694, 1.04102)
+texture = ExtResource("3_yblp0")
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2(361.8, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(181.5, 583.5)
+scale = Vector2(1.08036, 1.00893)
+texture = ExtResource("4_a2f8g")
+
+[node name="Piso2" type="StaticBody2D" parent="." groups=["Obstaculos"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Piso2" groups=["Obstaculos"]]
+position = Vector2(180, 584.5)
+shape = SubResource("RectangleShape2D_w2hvp")
+
+[node name="Piso" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Piso"]
+position = Vector2(180, -36)
+shape = SubResource("RectangleShape2D_w2hvp")
+
+[node name="ScoreLabel" type="Label" parent="."]
+z_index = 2
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -18.0
+offset_top = 8.0
+offset_right = 16.0
+offset_bottom = 87.0
+grow_horizontal = 2
+text = "0"
+label_settings = SubResource("LabelSettings_tm2vj")
+
+[node name="Message" type="Sprite2D" parent="."]
+process_mode = 3
+z_index = 2
+position = Vector2(170, 308)
+texture = ExtResource("7_bi2sj")
+script = ExtResource("8_c7v5v")
+
+[node name="Gameover" type="Sprite2D" parent="."]
+visible = false
+z_index = 1
+position = Vector2(174, 298)
+texture = ExtResource("7_wcevr")
+
+[node name="HitSound" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("10_fq12i")
+
+[node name="PointSound" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("11_hkdbb")
+
+[node name="FlapSound" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("12_wh336")
+
+[connection signal="timeout" from="CrearObstaculosTimer" to="." method="_on_crear_obstaculos_timer_timeout"]

@@ -1,0 +1,68 @@
+[gd_scene load_steps=10 format=3 uid="uid://benahmw6wnmx6"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_g85mw"]
+[ext_resource type="Texture2D" uid="uid://cctur7nk1briu" path="res://flappy-bird-assets/sprites/Ovni-1.png.png" id="2_tpaxt"]
+[ext_resource type="Texture2D" uid="uid://cavvoenwy7tgp" path="res://flappy-bird-assets/sprites/Ovni-2.png.png" id="3_uhcos"]
+[ext_resource type="Texture2D" uid="uid://ubttf3cap5ym" path="res://flappy-bird-assets/sprites/Ovni-3.png.png" id="4_2cqck"]
+[ext_resource type="Texture2D" uid="uid://0b2iny3yh2x2" path="res://flappy-bird-assets/sprites/Ovni-4.png.png" id="5_r24nl"]
+[ext_resource type="Texture2D" uid="uid://bepiq7wxm7bmn" path="res://flappy-bird-assets/sprites/Ovni-5.png.png" id="6_864a5"]
+[ext_resource type="Texture2D" uid="uid://d4byx83l2s3qo" path="res://flappy-bird-assets/sprites/Ovni-6.png.png" id="7_g6ryf"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_aio7e"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_tpaxt")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_tpaxt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_uhcos")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_2cqck")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_r24nl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_864a5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_g6ryf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_tpaxt")
+}],
+"loop": false,
+"name": &"flap",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cp678"]
+radius = 12.0416
+
+[node name="Player" type="RigidBody2D" groups=["Player"]]
+position = Vector2(170, 310)
+script = ExtResource("1_g85mw")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-2.80142e-06, -0.999985)
+scale = Vector2(1.75, 2.0625)
+sprite_frames = SubResource("SpriteFrames_aio7e")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_cp678")
+
+[node name="DetectarPiso" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectarPiso"]
+shape = SubResource("CircleShape2D_cp678")
+
+[connection signal="body_entered" from="DetectarPiso" to="." method="_on_detectar_piso_body_entered"]
